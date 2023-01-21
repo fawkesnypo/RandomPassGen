@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ActnList, ExtCtrls,
-  StdCtrls, ComCtrls, Spin,Math;
+  StdCtrls, ComCtrls, Spin, Math;
 
 type
 
@@ -15,6 +15,7 @@ type
   TForm1 = class(TForm)
     btGerar: TButton;
     cbGroup1: TCheckGroup;
+    Output: TEdit;
     lTamanho: TLabel;
     cbNumeros: TCheckBox;
     Panel1: TPanel;
@@ -25,6 +26,7 @@ type
     procedure cbChange(Sender: TObject);
     function Password(range:Integer):string;
     function getContent:string;
+    function ValidateNumberLNS(number:Integer):Integer;
     function ValidateNumberLN(number:Integer):Integer;
     function ValidateNumberLS(number:Integer):Integer;
     function ValidateNumberNS(number:Integer):Integer;
@@ -52,7 +54,7 @@ begin
   if seTamanho.Value >= 3 then
      begin
           pswd := Password(seTamanho.Value);
-          ShowMessage(pswd);
+          Output.Text:=pswd;
      end
   else
       begin
@@ -83,6 +85,35 @@ begin
        end;
 end;
 
+function TForm1.ValidateNumberLNS(number:Integer):Integer;
+begin
+   case number of
+       33:begin
+         Result := number
+       end;
+       35..38:begin
+         Result := number
+       end;
+       42..43:begin
+         Result := number
+       end;
+       48..57:begin
+         Result := number
+       end;
+       63..90:begin
+         Result := number
+       end;
+       97..125:begin
+         Result := number
+       end;
+       else
+         begin
+         Result := RandomRange(65,90)
+       end;
+   end;
+
+end;
+
 function TForm1.ValidateNumberLN(number:Integer):Integer;
 begin
    case number of
@@ -105,15 +136,24 @@ end;
 function TForm1.ValidateNumberLS(number:Integer):Integer;
 begin
    case number of
-       33..47:begin
+       33:begin
          Result := number
        end;
-       58..126:begin
+       35..38:begin
+         Result := number
+       end;
+       42..43:begin
+         Result := number
+       end;
+       63..90:begin
+         Result := number
+       end;
+       97..125:begin
          Result := number
        end;
        else
          begin
-         Result := RandomRange(58,126)
+         Result := RandomRange(35,38)
        end;
    end;
 
@@ -121,18 +161,30 @@ end;
 function TForm1.ValidateNumberNS(number:Integer):Integer;
 begin
    case number of
-       33..64:begin
+       33:begin
+         Result := number
+       end;
+       35..38:begin
+         Result := number
+       end;
+       42..43:begin
+         Result := number
+       end;
+       48..57:begin
+         Result := number
+       end;
+       63..64:begin
          Result := number
        end;
        91..96:begin
          Result := number
        end;
-       123..126:begin
+       123..125:begin
          Result := number
        end;
        else
          begin
-         Result := RandomRange(33,64)
+         Result := RandomRange(42,57)
        end;
    end;
 
@@ -156,21 +208,21 @@ end;
 function TForm1.ValidateNumberS(number:Integer):Integer;
 begin
    case number of
-       33..47:begin
+       33:begin
          Result := number
        end;
-       58..64:begin
+       35..38:begin
          Result := number
        end;
-       91..96:begin
+       42..43:begin
          Result := number
        end;
-       123..126:begin
+       63..64:begin
          Result := number
        end;
        else
          begin
-         Result := RandomRange(33,47)
+         Result := RandomRange(35,38)
        end;
    end;
 
@@ -189,8 +241,8 @@ begin
        case content of
            'LNS':begin
                         rFrom := 33;
-                        rTo := 126;
-                        str[int] := chr(RandomRange(rFrom,rTo));
+                        rTo := 125;
+                        str[int] := chr(ValidateNumberLNS(RandomRange(rFrom,rTo)));
            end;
 
            'LN':begin
